@@ -11,12 +11,12 @@ def calc_bollinger(candles: list[list]) -> dict[str, float | None]:
     candles: ccxt OHLCV格式 [[ts, open, high, low, close, volume], ...]
     返回: {mid, upper, lower} (从前一根收盘价计算，无未来数据)
     """
-    if len(candles) < BOLL_PERIOD + 1:
+    if len(candles) < BOLL_PERIOD:
         return {'mid': None, 'upper': None, 'lower': None}
 
     df = pd.DataFrame(candles, columns=['ts', 'o', 'h', 'l', 'c', 'v'])
-    # 取最近BOLL_PERIOD根的前收盘价（shift(1)保证无未来数据）
-    closes = df['c'].values[-(BOLL_PERIOD + 1):-1]  # 排除最后一根
+    # 取最近BOLL_PERIOD根收盘价（最后一个是当前K线已排除）
+    closes = df['c'].values[-BOLL_PERIOD:]
     mid = float(np.mean(closes))
     std = float(np.std(closes, ddof=0))
     upper = mid + std * BOLL_STD
@@ -26,9 +26,9 @@ def calc_bollinger(candles: list[list]) -> dict[str, float | None]:
 
 def calc_bollinger_from_df(df: pd.DataFrame) -> dict[str, float | None]:
     """从已有DataFrame计算布林带（回测验证用）"""
-    if len(df) < BOLL_PERIOD + 1:
+    if len(df) < BOLL_PERIOD:
         return {'mid': None, 'upper': None, 'lower': None}
-    closes = df['c'].values[-(BOLL_PERIOD + 1):-1]
+    closes = df['c'].values[-BOLL_PERIOD:]
     mid = float(np.mean(closes))
     std = float(np.std(closes, ddof=0))
     upper = mid + std * BOLL_STD
