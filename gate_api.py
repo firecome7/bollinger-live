@@ -18,9 +18,7 @@ class GateAPI:
         })
         self.ex.load_markets()
         self.ex.options['defaultType'] = 'swap'
-        # 设置双向持仓模式（多空同时持仓关键）
-        self._set_hedge_mode()
-        self._set_leverage_all()
+        # 杠杆和双向持仓延迟到 setup_coins 时按需设置
 
     # ── 工具 ──
 
@@ -43,7 +41,24 @@ class GateAPI:
 
     # ── 持仓模式 ──
 
-    def _set_hedge_mode(self):
+    def setup_coins(self, coins: list[str]):
+        """对目标币种设置双向持仓+杠杆（按需，只设需要的币）"""
+        t0 = time.time()
+        n_ok = 0
+        n_fail = 0
+        for coin in coins:
+            sym = self.swap_symbol(coin)
+            try:
+                self.ex.set_position_mode('dual', sym)
+                self.ex.set_leverage(LEVERAGE, sym)
+                n_ok += 1
+            except Exception:
+                n_fail += 1
+            if (n_ok + n_fail) % 20 == 0:
+                pass  # 静默，main那边会打日志
+        print(f"  setup_coins: {n_ok}个成功, {n_fail}个跳过/已设 ({time.time()-t0:.1f}s)", flush=True)
+
+    def _set_hedge_mode(self, symbols: Optional[list[str]] = None):
         """设置为双向持仓（多空可同时持有）"""
         for sym, m in self.ex.markets.items():
             if m['swap'] and m['settle'] == 'USDT' and m['linear'] and m['active']:

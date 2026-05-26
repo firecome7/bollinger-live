@@ -42,16 +42,40 @@ class LiveTrader:
         self._tick_count = 0
 
     def _get_target_coins(self) -> list[str]:
-        """获取目标币种列表"""
+        """获取目标币种列表，按成交量过滤选前150"""
         t0 = time.time()
         all_swaps = self.api.get_available_swaps()
-        logger.info(f"Gate.io可用USDT永续合约: {len(all_swaps)} 个 (耗时{time.time()-t0:.1f}s)")
+        logger.info(f"Gate.io可用USDT永续合约: {len(all_swaps)} 个")
 
+        # 排除大市值
         exclude = {'BTC', 'ETH', 'XRP', 'BNB', 'SOL', 'DOGE', 'ADA',
                     'USDC', 'TRX', 'LINK', 'AVAX', 'TON', 'DOT', 'MATIC'}
-        coins = [c for c in all_swaps if c not in exclude]
-        coins.sort()
-        logger.info(f"目标币种: {len(coins)} 个 (排除{len(exclude)}个大市值)")
+        filtered = [c for c in all_swaps if c not in exclude]
+        logger.info(f"排除{len(exclude)}个大市值后剩: {len(filtered)} 个")
+
+        # 拉全量行情，按24h成交量过滤+排序
+        tickers = self.api.fetch_tickers_all()
+        vol_list = []
+        for coin in filtered:
+            t = tickers.get(coin)
+            if t is None:
+                continue
+            vol = float(t.get('quoteVolume', 0) or 0)
+            if vol >= 2_000_000:  # 成交量≥200万USDT
+                vol_list.append((coin, vol))
+
+        vol_list.sort(key=lambda x: -x[1])  # 按成交量降序
+        n = min(80, len(vol_list))
+        coins = [c for c, _ in vol_list[:n]]
+        coins.sort()  # 最终按字母排序，方便日志
+        logger.info(f"成交量≥$200万的币: {len(vol_list)} 个, 实际取{n}个")
+        if coins:
+            logger.info(f"  最小成交额: ${vol_list[:n][-1][1]:,.0f} ({coins[0]})")
+            logger.info(f"  最大成交额: ${vol_list[:n][0][1]:,.0f} ({coins[-1]})")
+        logger.info(f"  (耗时{time.time()-t0:.1f}s)")
+
+        # 对选中的币设置杠杆+双向持仓
+        self.api.setup_coins(coins)
 
         self._init_candles(coins)
         return coins
