@@ -1,0 +1,6 @@
+🚨 [05-26 13:23] 程序异常!
+  2026-05-26 13:22:41,584 [main] WARNING [PLAY] 查入场成交失败: gate {"label":"ORDER_NOT_FOUND","message":"Order with ID 258956978957215849 not found"}
+  2026-05-26 13:22:56,978 [engine] WARNING [LAB] ❌ 做空信号跳过: $4.604725 张数不足1张 (本金$100.0)
+  2026-05-26 13:22:56,978 [engine] WARNING [LAB] ❌ 做空信号跳过: $4.604725 张数不足1张 (本金$100.0)
+  2026-05-26 13:22:57,149 [main] WARNING [PLAY] 查入场成交失败: gate {"label":"ORDER_NOT_FOUND","message":"Order with ID 258956978957215849 not found"}
+  2026-05-26 13:22:57,149 [main] WARNING [PLAY] 查入场成交失败: gate {"label":"ORDER_NOT_FOUND","message":"Order with ID 258956978957215849 not found"}

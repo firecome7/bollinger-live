@@ -314,6 +314,12 @@ class LiveTrader:
                 return False
         except Exception as e:
             logger.warning(f"[{coin}] 查入场成交失败: {e}")
+            # ORDER_NOT_FOUND = 订单已被清理，清除引擎状态
+            if 'ORDER_NOT_FOUND' in str(e) or 'not found' in str(e).lower():
+                cs.entry_order_id = None
+                cs.entry_price = 0.0
+                self.engine.active_coins.discard(coin)
+                logger.info(f"[{coin}] 订单不存在，清除挂单状态")
         return False
 
 
