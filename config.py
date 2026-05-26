@@ -46,4 +46,4 @@ def load_api_keys() -> dict:
 
 
 # ====== 验证模式 ======
-DRY_RUN = True  # True=只扫信号不下单，False=实盘
+DRY_RUN = False  # True=只扫信号不下单，False=实盘
