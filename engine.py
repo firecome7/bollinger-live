@@ -467,11 +467,11 @@ class TradingEngine:
         else:
             logger.warning(f"[{coin}] ⚠️ 止盈限价单挂单失败 @ ${cs.take_price:.6f}")
 
-        # 挂止损限价单
-        sl_order = self.api.create_limit_close(coin, close_side, cs.position_size, cs.stop_price)
+        # 挂止损条件单（stop-limit，价格触发后才激活）
+        sl_order = self.api.create_stop_loss_close(coin, close_side, cs.position_size, cs.stop_price)
         if sl_order:
             cs.stop_order_id = sl_order['id']
-            logger.info(f"[{coin}] 止损限价单已挂: ${cs.stop_price:.6f} ID={sl_order['id']}")
+            logger.info(f"[{coin}] 🔒 止损条件单已挂: 触发价${cs.stop_price:.6f} ID={sl_order['id']}")
         else:
             logger.warning(f"[{coin}] ⚠️ 止损限价单挂单失败 @ ${cs.stop_price:.6f}")
 

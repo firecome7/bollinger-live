@@ -171,6 +171,7 @@ class GateAPI:
                            price: float) -> Optional[dict]:
         """限价平仓（reduceOnly）
         side: 与持仓方向相反 — long仓用'sell', short仓用'buy'
+        适用于止盈（价格方向有利，不会穿价成交）
         """
         sym = self.swap_symbol(coin)
         contracts = float(self.ex.amount_to_precision(sym, contracts))
@@ -179,6 +180,23 @@ class GateAPI:
         order = self.ex.create_order(
             sym, 'limit', side, contracts, price,
             {'reduceOnly': True}
+        )
+        return order
+
+    def create_stop_loss_close(self, coin: str, side: str, contracts: float,
+                                trigger_price: float) -> Optional[dict]:
+        """止损条件单（stop-limit）
+        价格到trigger_price才激活限价平仓单
+        避免直接限价单穿价成交（做空止损买价高于市价、做多止损卖价低于市价）
+        """
+        sym = self.swap_symbol(coin)
+        contracts = float(self.ex.amount_to_precision(sym, contracts))
+        if contracts <= 0:
+            return None
+        # 使用stopPrice创建条件单，价格触发后以同价限价平仓
+        order = self.ex.create_order(
+            sym, 'limit', side, contracts, trigger_price,
+            {'stopPrice': trigger_price, 'reduceOnly': True}
         )
         return order
 
