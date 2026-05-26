@@ -1,0 +1,198 @@
+"""Gate.io REST API封装 — 基于ccxt"""
+from __future__ import annotations
+
+import ccxt
+import time
+from typing import Optional
+from config import load_api_keys, LEVERAGE
+
+class GateAPI:
+    """ccxt封装的Gate.io永续合约操作"""
+
+    def __init__(self):
+        keys = load_api_keys()
+        self.ex = ccxt.gate({
+            'apiKey': keys['apiKey'],
+            'secret': keys['secret'],
+            'enableRateLimit': True,
+        })
+        self.ex.load_markets()
+        # 启用手动模式（双仓并存hh）
+        self.ex.options['defaultType'] = 'swap'
+        self._set_leverage_all()
+
+    # ── 工具 ──
+
+    def swap_symbol(self, coin: str) -> str:
+        """币名→ccxt永续合约格式, e.g. PEPE → PEPE/USDT:USDT"""
+        return f"{coin}/USDT:USDT"
+
+    def parse_coin(self, ccxt_symbol: str) -> str:
+        """ccxt symbol→币名"""
+        return ccxt_symbol.split('/')[0]
+
+    def get_available_swaps(self) -> list[str]:
+        """返回所有USDT保证金永续合约的币名列表"""
+        coins = []
+        for sym in self.ex.markets:
+            m = self.ex.markets[sym]
+            if m['swap'] and m['settle'] == 'USDT' and m['linear'] and m['active']:
+                coins.append(self.parse_coin(sym))
+        return sorted(coins)
+
+    # ── 杠杆 ──
+
+    def _set_leverage_all(self):
+        """对所有USDT永续设置杠杆"""
+        for sym, m in self.ex.markets.items():
+            if m['swap'] and m['settle'] == 'USDT' and m['linear'] and m['active']:
+                try:
+                    self.ex.set_leverage(LEVERAGE, sym)
+                except Exception:
+                    pass
+
+    # ── 行情 ──
+
+    def fetch_ohlcv(self, coin: str, limit: int = 50) -> list[list]:
+        """获取OHLCV数据 15m"""
+        return self.ex.fetch_ohlcv(self.swap_symbol(coin), '15m', limit=limit)
+
+    def fetch_ticker(self, coin: str) -> dict:
+        """获取实时行情"""
+        return self.ex.fetch_ticker(self.swap_symbol(coin))
+
+    def fetch_tickers_all(self) -> dict[str, dict]:
+        """获取所有USDT永续实时行情"""
+        tickers = self.ex.fetch_tickers()
+        result = {}
+        for sym, t in tickers.items():
+            if sym in self.ex.markets:
+                m = self.ex.markets[sym]
+                if m['swap'] and m['settle'] == 'USDT' and m['linear']:
+                    result[self.parse_coin(sym)] = t
+        return result
+
+    # ── 账户 ──
+
+    def fetch_balance(self) -> dict:
+        """USDT余额"""
+        bal = self.ex.fetch_balance()
+        return {
+            'total': bal['total'].get('USDT', 0),
+            'free': bal['free'].get('USDT', 0),
+            'used': bal['used'].get('USDT', 0),
+        }
+
+    def fetch_positions(self) -> list[dict]:
+        """获取所有活跃持仓"""
+        try:
+            positions = self.ex.fetch_positions()
+            active = []
+            for p in positions:
+                sz = float(p['contracts'] or 0)
+                if sz > 0:
+                    active.append({
+                        'symbol': p['symbol'],
+                        'coin': self.parse_coin(p['symbol']),
+                        'side': p['side'],           # long/short
+                        'size': sz,                  # 张数
+                        'entry_price': float(p['entryPrice']),
+                        'unrealized_pnl': float(p['unrealizedPnl'] or 0),
+                        'notional': float(p['notional'] or 0),
+                        'margin': float(p['initialMargin'] or 0),
+                    })
+            return active
+        except Exception:
+            return []
+
+    # ── 订单 ──
+
+    def _contract_size(self, coin: str) -> float:
+        """合约乘数（1张=多少币）"""
+        sym = self.swap_symbol(coin)
+        return float(self.ex.market(sym)['contractSize'])
+
+    def _calc_contracts(self, coin: str, usd_value: float, price: float) -> float:
+        """美元名义价值→合约张数"""
+        price = float(price)
+        sz = self._contract_size(coin)
+        raw = usd_value / (sz * price)
+        sym = self.swap_symbol(coin)
+        precision = self.ex.market(sym)['precision']['amount']
+        # 向下取整到精度
+        factor = 10 ** precision
+        return int(raw * factor) / factor if precision > 0 else int(raw)
+
+    def create_limit_entry(self, coin: str, side: str, usd_value: float,
+                           price: float) -> Optional[dict]:
+        """限价开仓
+        side: 'buy'(long) / 'sell'(short)
+        usd_value: 期望的名义价值 USDT
+        """
+        sym = self.swap_symbol(coin)
+        contracts = self._calc_contracts(coin, usd_value, price)
+        if contracts <= 0:
+            return None
+        contracts = float(self.ex.amount_to_precision(sym, contracts))
+        if contracts <= 0:
+            return None
+
+        order = self.ex.create_order(sym, 'limit', side, contracts, price)
+        return order
+
+    def create_limit_close(self, coin: str, side: str, contracts: float,
+                           price: float) -> Optional[dict]:
+        """限价平仓（reduceOnly）
+        side: 与持仓方向相反 — long仓用'sell', short仓用'buy'
+        """
+        sym = self.swap_symbol(coin)
+        contracts = float(self.ex.amount_to_precision(sym, contracts))
+        if contracts <= 0:
+            return None
+        order = self.ex.create_order(
+            sym, 'limit', side, contracts, price,
+            {'reduceOnly': True}
+        )
+        return order
+
+    def create_market_close(self, coin: str, side: str, contracts: float) -> Optional[dict]:
+        """市价平仓"""
+        sym = self.swap_symbol(coin)
+        contracts = float(self.ex.amount_to_precision(sym, contracts))
+        if contracts <= 0:
+            return None
+        order = self.ex.create_order(
+            sym, 'market', side, contracts, None,
+            {'reduceOnly': True}
+        )
+        return order
+
+    def cancel_order(self, coin: str, order_id: str) -> bool:
+        """撤单"""
+        try:
+            self.ex.cancel_order(order_id, self.swap_symbol(coin))
+            return True
+        except Exception:
+            return False
+
+    def fetch_open_orders(self, coin: Optional[str] = None) -> list[dict]:
+        """未成交订单列表"""
+        sym = self.swap_symbol(coin) if coin else None
+        orders = self.ex.fetch_open_orders(sym) if sym else self.ex.fetch_open_orders()
+        result = []
+        for o in orders:
+            result.append({
+                'id': o['id'],
+                'symbol': o['symbol'],
+                'coin': self.parse_coin(o['symbol']),
+                'side': o['side'],
+                'price': float(o['price'] or 0),
+                'amount': float(o['amount']),
+                'filled': float(o['filled']),
+                'remaining': float(o['remaining']),
+                'type': o['type'],
+                'status': o['status'],
+                'reduce_only': o.get('reduceOnly', False),
+                'timestamp': o['timestamp'],
+            })
+        return result

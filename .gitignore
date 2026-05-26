@@ -1,0 +1,4 @@
+*.pyc
+__pycache__/
+*gate_keys*.json
+bollinger_live.log
