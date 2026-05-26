@@ -17,8 +17,9 @@ class GateAPI:
             'enableRateLimit': True,
         })
         self.ex.load_markets()
-        # 启用手动模式（双仓并存hh）
         self.ex.options['defaultType'] = 'swap'
+        # 设置双向持仓模式（多空同时持仓关键）
+        self._set_hedge_mode()
         self._set_leverage_all()
 
     # ── 工具 ──
@@ -39,6 +40,17 @@ class GateAPI:
             if m['swap'] and m['settle'] == 'USDT' and m['linear'] and m['active']:
                 coins.append(self.parse_coin(sym))
         return sorted(coins)
+
+    # ── 持仓模式 ──
+
+    def _set_hedge_mode(self):
+        """设置为双向持仓（多空可同时持有）"""
+        for sym, m in self.ex.markets.items():
+            if m['swap'] and m['settle'] == 'USDT' and m['linear'] and m['active']:
+                try:
+                    self.ex.set_position_mode('dual', sym)
+                except Exception:
+                    pass  # 已经是双向模式就不管
 
     # ── 杠杆 ──
 
@@ -112,16 +124,11 @@ class GateAPI:
         sym = self.swap_symbol(coin)
         return float(self.ex.market(sym)['contractSize'])
 
-    def _calc_contracts(self, coin: str, usd_value: float, price: float) -> float:
-        """美元名义价值→合约张数"""
-        price = float(price)
+    def _calc_contracts(self, coin: str, usd_value: float, price: float) -> int:
+        """美元名义价值→合约张数（向下取整，返回整数张）"""
         sz = self._contract_size(coin)
         raw = usd_value / (sz * price)
-        sym = self.swap_symbol(coin)
-        precision = self.ex.market(sym)['precision']['amount']
-        # 向下取整到精度
-        factor = 10 ** precision
-        return int(raw * factor) / factor if precision > 0 else int(raw)
+        return int(raw)  # 向下取整
 
     def create_limit_entry(self, coin: str, side: str, usd_value: float,
                            price: float) -> Optional[dict]:
