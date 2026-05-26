@@ -11,7 +11,7 @@ MAX_POSITIONS = 20                 # 最大同时持仓币数
 
 # ====== 策略参数 ======
 STOP_LOSS_PCT = 0.01               # 止损 1%
-TAKE_PROFIT_PCT = 0.04             # 止盈 4%
+TAKE_PROFIT_PCT = 0.05             # 止盈 5%
 BOLL_PERIOD = 25                   # 布林带周期
 BOLL_STD = 2                       # 布林带标准差倍数
 ENTRY_OFFSET = 0.04                # 挂单在布林带外4%
