@@ -36,6 +36,7 @@ class LiveTrader:
         logger.info(f"Gate.io API连接完成 ({time.time()-t0:.1f}s)")
         self.coins = self._get_target_coins()
         self.engine = TradingEngine(self.api, self.coins)
+        self._init_candles(self.coins)  # 移到 engine 创建后
         self.last_bar_ts = 0
         self.last_log_ts = 0
         self.last_order_check_ts = 0
@@ -77,7 +78,6 @@ class LiveTrader:
         # 对选中的币设置杠杆+双向持仓
         self.api.setup_coins(coins)
 
-        self._init_candles(coins)
         return coins
 
     def _init_candles(self, coins: list[str]):
