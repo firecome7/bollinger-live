@@ -267,22 +267,29 @@ class TradingEngine:
         if not cs.pending_exit:
             return []
 
+        # 如果持仓已经被清掉了（sync_positions检测到出场单成交），取消倒计时
+        if not cs.holding:
+            cs.exit_triggered_at = None
+            cs.exit_triggered_type = ''
+            return []
+
         elapsed = time.time() - cs.exit_triggered_at
         if elapsed < TIMEOUT_SECONDS:
             return []  # 还在倒计时内
 
         # 15秒到了，限价单还没成交 → 市价强平
         logger.info(f"[{coin}] {cs.exit_triggered_type} 限价15秒未成交，转市价平仓")
-
         close_side = 'sell' if cs.position_side == 'long' else 'buy'
-        order = self.api.create_market_close(coin, close_side, cs.position_size)
+        try:
+            order = self.api.create_market_close(coin, close_side, cs.position_size)
+            if order:
+                logger.info(f"[{coin}] 市价平仓完成: {order.get('id','?')}")
+            else:
+                logger.warning(f"[{coin}] 市价平仓返回空，可能已平仓")
+        except Exception as e:
+            logger.warning(f"[{coin}] 市价平仓异常（可能已平）: {e}")
 
-        if order:
-            logger.info(f"[{coin}] 市价平仓完成: {order.get('id','?')}")
-        else:
-            logger.warning(f"[{coin}] 市价平仓失败，需人工检查")
-
-        self._clear_position(coin)
+        self.clear_position(coin)
         return [{
             'time': time.time(),
             'coin': coin,
@@ -299,7 +306,7 @@ class TradingEngine:
 
         if reduce_only:
             # 出场单成交了
-            self._clear_position(coin)
+            self.clear_position(coin)
             logger.info(f"[{coin}] 平仓成交 @ {fill_price:.6f}")
             return
 
@@ -336,8 +343,8 @@ class TradingEngine:
                      f"方向{cs.position_side} 仓位${FIXED_POSITION_VALUE:.0f} "
                      f"止盈{cs.take_price:.6f} 止损{cs.stop_price:.6f}")
 
-    def _clear_position(self, coin: str):
-        """清空持仓状态"""
+    def clear_position(self, coin: str):
+        """清空持仓状态（外部可调用）"""
         cs = self.state[coin]
         cs.holding = False
         cs.position_side = ''
@@ -360,7 +367,7 @@ class TradingEngine:
         for coin, cs in self.state.items():
             if cs.holding and coin not in exchange_coins:
                 logger.info(f"[{coin}] 检测到持仓已平（限价单成交）")
-                self._clear_position(coin)
+                self.clear_position(coin)
 
     # ── 状态输出 ──
 

@@ -149,11 +149,11 @@ class LiveTrader:
                 if not candles:
                     continue
                 last = candles[-1]
-                # 确保K线时间戳匹配
                 bar_open = last[1]
                 self.engine.on_new_bar(coin, bar_ts, bar_open, candles[:-1])
             except Exception as e:
                 logger.warning(f"[{coin}] 新K线更新失败: {e}")
+            time.sleep(0.15)  # 避免限频
 
     # ── 行情轮询 ──
 
@@ -179,28 +179,43 @@ class LiveTrader:
     # ── 订单状态检查 ──
 
     def _check_orders(self):
-        """检查订单状态（用于检测是否成交）"""
+        """检查订单状态（检测入场/出场挂单是否成交）"""
         try:
             orders = self.api.fetch_open_orders()
         except Exception as e:
             logger.warning(f"获取订单失败: {e}")
             return
 
-        # 构建当前未成交订单ID集合
-        open_ids = set()
-        for o in orders:
-            open_ids.add(o['id'])
-            coin = o['coin']
-            if coin not in self.engine.state:
-                continue
-            cs = self.engine.state[coin]
+        # 当前未成交订单ID集合
+        open_ids = {o['id'] for o in orders}
 
-        # 检查我跟踪的订单是否已不在open列表中→可能成交了
         for coin, cs in self.engine.state.items():
-            # 检查入场挂单
+            # 检查入场挂单是否成交（不在open列表→可能成交/取消）
             if cs.entry_order_id and cs.entry_order_id not in open_ids:
-                # 查成交记录确认
                 self._check_entry_fill(coin, cs)
+
+            # 检查出场挂单是否成交（止盈/止损限价单被交易所成交）
+            if cs.holding:
+                for oid in (cs.stop_order_id, cs.take_order_id):
+                    if oid and oid not in open_ids:
+                        self._check_exit_fill(coin, cs, oid)
+
+    def _check_exit_fill(self, coin: str, cs, order_id: str):
+        """检查出场限价单是否成交"""
+        sym = self.api.swap_symbol(coin)
+        try:
+            order_info = self.api.ex.fetch_order(order_id, sym)
+            if order_info['status'] == 'closed' and float(order_info['filled']) > 0:
+                logger.info(f"[{coin}] 出场限价单成交: {order_info['side']} @ "
+                            f"{order_info.get('price','?')}")
+                # 出场单成交→被交易所平仓了，清空引擎状态
+                self.engine.clear_position(coin)
+            elif order_info['status'] == 'canceled':
+                # 被手动取消或其他原因，重新挂单？
+                # v1暂不处理，让持仓自然走15s超时流程
+                logger.warning(f"[{coin}] 出场限价单被取消: {order_id}")
+        except Exception as e:
+            logger.warning(f"[{coin}] 查出场成交失败: {e}")
 
     def _check_entry_fill(self, coin: str, cs):
         """检查入场单是否成交"""
