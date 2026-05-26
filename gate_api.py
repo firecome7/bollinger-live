@@ -30,6 +30,11 @@ class GateAPI:
         """ccxt symbol→币名"""
         return ccxt_symbol.split('/')[0]
 
+    def can_open_position(self, coin: str, price: float, usd_value: float = 100.0) -> bool:
+        """检查给定价格下是否能开至少1张合约"""
+        contracts = self._calc_contracts(coin, usd_value, price)
+        return contracts >= 1
+
     def get_available_swaps(self) -> list[str]:
         """返回所有USDT保证金永续合约的币名列表"""
         coins = []

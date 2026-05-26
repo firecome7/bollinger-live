@@ -227,6 +227,19 @@ class TradingEngine:
             logger.debug(f"[{coin}] 跳过信号: 本根K线已止损/止盈")
             return None
 
+        # 价格偏离保护：当前价远离布林带>1倍带宽，等价格回归
+        bandwidth = cs.bb_upper - cs.bb_lower
+        if bandwidth > 0:
+            dist_from_band = 0.0
+            if price > cs.bb_upper:
+                dist_from_band = (price - cs.bb_upper) / bandwidth
+            elif price < cs.bb_lower:
+                dist_from_band = (cs.bb_lower - price) / bandwidth
+            if dist_from_band > 1.0:
+                logger.debug(f"[{coin}] 跳过信号: 价格偏离布林带{dist_from_band:.1f}倍带宽 "
+                             f"(带宽${bandwidth:.4f})")
+                return None
+
         # 仓位上限
         holding_count = sum(1 for s in self.state.values() if s.holding)
         if holding_count >= MAX_POSITIONS:
@@ -242,6 +255,11 @@ class TradingEngine:
         if price_below_lower and is_red:
             has_long, limit_p = check_long_signal(price, cs.bb_lower, bar_open)
             if has_long:
+                # 检查是否能开仓（最小张数）
+                if not self.api.can_open_position(coin, limit_p, FIXED_POSITION_VALUE):
+                    logger.warning(f"[{coin}] ❌ 做多信号跳过: ${limit_p:.6f} 张数不足1张 "
+                                   f"(本金${FIXED_POSITION_VALUE})")
+                    return None
                 logger.info(f"[{coin}] 📈 做多信号! "
                             f"价格${price:.4f}<下轨${cs.bb_lower:.4f} "
                             f"阴线(is_green={is_green}) "
@@ -256,6 +274,11 @@ class TradingEngine:
         if price_above_upper and is_green:
             has_short, limit_p = check_short_signal(price, cs.bb_upper, bar_open)
             if has_short:
+                # 检查是否能开仓（最小张数）
+                if not self.api.can_open_position(coin, limit_p, FIXED_POSITION_VALUE):
+                    logger.warning(f"[{coin}] ❌ 做空信号跳过: ${limit_p:.6f} 张数不足1张 "
+                                   f"(本金${FIXED_POSITION_VALUE})")
+                    return None
                 logger.info(f"[{coin}] 📉 做空信号! "
                             f"价格${price:.4f}>上轨${cs.bb_upper:.4f} "
                             f"阳线(is_green={is_green}) "
