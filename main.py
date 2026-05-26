@@ -23,89 +23,105 @@ logging.basicConfig(
 )
 logger = logging.getLogger('main')
 
-# 15m = 900秒
-BAR_SECONDS = 900
-POLL_INTERVAL = 15  # 15秒轮询一次行情
+BAR_SECONDS = 900  # 15m
+POLL_INTERVAL = 15
 
 
 class LiveTrader:
     """实盘主循环"""
 
     def __init__(self):
+        t0 = time.time()
         self.api = GateAPI()
+        logger.info(f"Gate.io API连接完成 ({time.time()-t0:.1f}s)")
         self.coins = self._get_target_coins()
         self.engine = TradingEngine(self.api, self.coins)
-        self.last_bar_ts = 0  # 上次处理的K线时间戳
-        self.last_log_ts = 0  # 上次打日志时间
-        self.last_order_check_ts = 0  # 上次检查订单状态
+        self.last_bar_ts = 0
+        self.last_log_ts = 0
+        self.last_order_check_ts = 0
+        self._tick_count = 0
 
     def _get_target_coins(self) -> list[str]:
         """获取目标币种列表"""
+        t0 = time.time()
         all_swaps = self.api.get_available_swaps()
-        logger.info(f"Gate.io可用USDT永续: {len(all_swaps)} 个")
+        logger.info(f"Gate.io可用USDT永续合约: {len(all_swaps)} 个 (耗时{time.time()-t0:.1f}s)")
 
-        # 排除前10大市值币种（BTC/ETH等）
         exclude = {'BTC', 'ETH', 'XRP', 'BNB', 'SOL', 'DOGE', 'ADA',
                     'USDC', 'TRX', 'LINK', 'AVAX', 'TON', 'DOT', 'MATIC'}
         coins = [c for c in all_swaps if c not in exclude]
         coins.sort()
-        logger.info(f"目标币种: {len(coins)} 个 (排除前10)")
+        logger.info(f"目标币种: {len(coins)} 个 (排除{len(exclude)}个大市值)")
 
-        # 初始化K线数据
         self._init_candles(coins)
         return coins
 
     def _init_candles(self, coins: list[str]):
         """启动时获取所有币的初始K线"""
+        n_ok = 0
+        n_skip = 0
+        t0 = time.time()
+        logger.info(f"开始初始化K线数据 ({len(coins)}个币, 约{len(coins)*0.18:.0f}s)...")
+
         for i, coin in enumerate(coins):
             try:
                 candles = self.api.fetch_ohlcv(coin, limit=50)
                 if not candles or len(candles) < 26:
+                    n_skip += 1
+                    logger.debug(f"[{coin}] K线不足{len(candles) if candles else 0}根,跳过")
                     continue
-                # 用最后两根K线初始化
                 last = candles[-1]
-                prev = candles[-2]
                 ts = last[0]
                 bar_open = last[1]
                 self.engine.on_new_bar(coin, ts, bar_open, candles[:-1])
+                n_ok += 1
             except Exception as e:
+                n_skip += 1
                 logger.warning(f"[{coin}] 初始化失败: {e}")
 
             if (i + 1) % 20 == 0:
-                logger.info(f"  初始化进度: {i+1}/{len(coins)}")
+                logger.info(f"  初始化进度: {i+1}/{len(coins)} ({n_ok}成功/{n_skip}跳过)")
+
+            time.sleep(0.15)
+
+        logger.info(f"K线初始化完成: {n_ok}个币成功, {n_skip}个跳过 ({time.time()-t0:.0f}s)")
 
     # ── 主循环 ──
 
     def run(self):
-        """开始运行"""
         logger.info("=" * 50)
-        logger.info("Bollinger策略实盘启动")
+        logger.info("Bollinger策略实盘 启动")
         logger.info(f"  K线周期: {TIMEFRAME}")
-        logger.info(f"  每笔${FIXED_POSITION_VALUE:.0f}, 最多{MAX_POSITIONS}仓")
-        logger.info(f"  轮询间隔: {POLL_INTERVAL}s")
-        logger.info(f"  触价超时转市价: {TIMEOUT_SECONDS}s")
+        logger.info(f"  每笔${FIXED_POSITION_VALUE:.0f} 最多{MAX_POSITIONS}仓 杠杆50x")
+        logger.info(f"  行情轮询: 每{POLL_INTERVAL}s")
+        logger.info(f"  订单检查: 每5s")
+        logger.info(f"  持仓同步: 每30s")
+        logger.info(f"  触价超时: {TIMEOUT_SECONDS}s后转市价")
         logger.info("=" * 50)
 
         while True:
             try:
                 self._tick()
             except KeyboardInterrupt:
-                logger.info("用户停止")
+                logger.info("🛑 用户手动停止")
                 break
             except Exception as e:
-                logger.error(f"主循环异常: {e}", exc_info=True)
-                time.sleep(60)  # 异常后等一分钟再试
+                logger.error(f"❌ 主循环异常: {e}", exc_info=True)
+                logger.warning("等待60s后自动恢复...")
+                time.sleep(60)
 
             time.sleep(POLL_INTERVAL)
 
     def _tick(self):
         """单次轮询"""
+        self._tick_count += 1
         now = time.time()
-        now_dt = datetime.now()
         bar_ts = self._current_bar_ts()
 
         # ── 1. 新K线检测 ──
         if bar_ts != self.last_bar_ts:
+            bar_dt = datetime.fromtimestamp(bar_ts / 1000).strftime('%H:%M')
+            logger.info(f"⏰ ── 新K线 {bar_dt} (tick#{self._tick_count}) ──")
             self._on_new_bar(bar_ts)
             self.last_bar_ts = bar_ts
 
@@ -120,6 +136,7 @@ class LiveTrader:
         # ── 4. 持仓同步（每30秒）──
         if int(now) % 30 < POLL_INTERVAL:
             try:
+                t0 = time.time()
                 positions = self.api.fetch_positions()
                 self.engine.sync_positions(positions)
             except Exception as e:
@@ -127,44 +144,61 @@ class LiveTrader:
 
         # ── 5. 定期日志（每60秒）──
         if now - self.last_log_ts >= 60:
-            bal = self.api.fetch_balance()
-            print(f"\n--- {now_dt.strftime('%H:%M:%S')} | "
-                  f"总权益${bal['total']:.2f} | 可用${bal['free']:.2f} | 抵扣${bal['used']:.2f}")
-            print(self.engine.get_summary())
+            try:
+                bal = self.api.fetch_balance()
+                n_hold = sum(1 for s in self.engine.state.values() if s.holding)
+                n_pend = sum(1 for s in self.engine.state.values() if s.pending_entry)
+                n_timer = sum(1 for s in self.engine.state.values() if s.pending_exit)
+                logger.info(f"── 状态 [{datetime.now().strftime('%H:%M:%S')}] ── "
+                            f"权益${bal['total']:.2f}(可用${bal['free']:.2f}) "
+                            f"持仓{n_hold}/{MAX_POSITIONS} 挂单{n_pend} 倒计时{n_timer}")
+            except Exception as e:
+                logger.warning(f"状态日志失败: {e}")
             self.last_log_ts = now
 
     # ── K线处理 ──
 
     def _current_bar_ts(self) -> int:
-        """当前15mK线的时间戳(毫秒)"""
         now = int(time.time())
         bar_start = now - (now % BAR_SECONDS)
         return bar_start * 1000
 
     def _on_new_bar(self, bar_ts: int):
-        """新K线到"""
+        """新K线：更新所有币的布林带 + 超时撤单"""
+        n_ok = 0
+        n_fail = 0
+        t0 = time.time()
+
         for coin in self.coins:
             try:
                 candles = self.api.fetch_ohlcv(coin, limit=50)
                 if not candles:
+                    n_fail += 1
                     continue
                 last = candles[-1]
                 bar_open = last[1]
                 self.engine.on_new_bar(coin, bar_ts, bar_open, candles[:-1])
+                n_ok += 1
             except Exception as e:
-                logger.warning(f"[{coin}] 新K线更新失败: {e}")
-            time.sleep(0.15)  # 避免限频
+                n_fail += 1
+                logger.debug(f"[{coin}] K线更新失败: {e}")
+            time.sleep(0.15)
+
+        elapsed = time.time() - t0
+        logger.info(f"K线更新: {n_ok}个币布林带已刷, {n_fail}个失败 ({elapsed:.0f}s)")
 
     # ── 行情轮询 ──
 
     def _poll_tickers(self):
         """轮询所有币的实时价格"""
+        t0 = time.time()
         try:
             tickers = self.api.fetch_tickers_all()
         except Exception as e:
             logger.warning(f"获取行情失败: {e}")
             return
 
+        n_processed = 0
         for coin, ticker in tickers.items():
             if coin not in self.engine.state:
                 continue
@@ -173,8 +207,12 @@ class LiveTrader:
                 continue
             try:
                 self.engine.on_tick(coin, float(last_price))
+                n_processed += 1
             except Exception as e:
-                logger.warning(f"[{coin}] tick处理失败: {e}")
+                logger.debug(f"[{coin}] tick处理失败: {e}")
+
+        if self._tick_count % 10 == 0:
+            logger.debug(f"行情轮询: {len(tickers)}币获取, {n_processed}处理 ({time.time()-t0:.2f}s)")
 
     # ── 订单状态检查 ──
 
@@ -186,58 +224,73 @@ class LiveTrader:
             logger.warning(f"获取订单失败: {e}")
             return
 
-        # 当前未成交订单ID集合
         open_ids = {o['id'] for o in orders}
+        n_entry_checked = 0
+        n_exit_checked = 0
+        n_entry_filled = 0
+        n_exit_filled = 0
 
         for coin, cs in self.engine.state.items():
-            # 检查入场挂单是否成交（不在open列表→可能成交/取消）
+            # 入场挂单检测
             if cs.entry_order_id and cs.entry_order_id not in open_ids:
-                self._check_entry_fill(coin, cs)
+                n_entry_checked += 1
+                if self._check_entry_fill(coin, cs):
+                    n_entry_filled += 1
 
-            # 检查出场挂单是否成交（止盈/止损限价单被交易所成交）
+            # 出场挂单检测
             if cs.holding:
                 for oid in (cs.stop_order_id, cs.take_order_id):
                     if oid and oid not in open_ids:
-                        self._check_exit_fill(coin, cs, oid)
+                        n_exit_checked += 1
+                        if self._check_exit_fill(coin, cs, oid):
+                            n_exit_filled += 1
 
-    def _check_exit_fill(self, coin: str, cs, order_id: str):
-        """检查出场限价单是否成交"""
+        if n_entry_filled > 0 or n_exit_filled > 0:
+            logger.info(f"订单检查: 入场+n_entry_filled成交 / 出场+n_exit_filled成交 "
+                        f"(当前未成交{len(open_ids)}笔)")
+
+    def _check_exit_fill(self, coin: str, cs, order_id: str) -> bool:
+        """检查出场限价单是否成交，返回True=已成交"""
         sym = self.api.swap_symbol(coin)
         try:
             order_info = self.api.ex.fetch_order(order_id, sym)
             if order_info['status'] == 'closed' and float(order_info['filled']) > 0:
-                logger.info(f"[{coin}] 出场限价单成交: {order_info['side']} @ "
-                            f"{order_info.get('price','?')}")
-                # 出场单成交→被交易所平仓了，清空引擎状态
-                self.engine.clear_position(coin)
+                fill_p = float(order_info.get('price', 0) or order_info.get('average', 0))
+                otype = '止盈' if order_id == cs.take_order_id else '止损'
+                logger.info(f"[{coin}] ✅ {otype}限价单成交 @ ${fill_p:.6f} ID={order_id}")
+                self.engine.clear_position(coin, reason=f'limit_{otype}')
+                return True
             elif order_info['status'] == 'canceled':
-                # 被手动取消或其他原因，重新挂单？
-                # v1暂不处理，让持仓自然走15s超时流程
-                logger.warning(f"[{coin}] 出场限价单被取消: {order_id}")
+                logger.warning(f"[{coin}] ⚠️ 出场限价单被取消 ID={order_id}")
+                return False
         except Exception as e:
-            logger.warning(f"[{coin}] 查出场成交失败: {e}")
+            logger.debug(f"[{coin}] 查出场成交失败: {e}")
+        return False
 
-    def _check_entry_fill(self, coin: str, cs):
-        """检查入场单是否成交"""
+    def _check_entry_fill(self, coin: str, cs) -> bool:
+        """检查入场单是否成交，返回True=已成交"""
         sym = self.api.swap_symbol(coin)
         try:
-            # 用fetch_orders查历史订单
             order_info = self.api.ex.fetch_order(cs.entry_order_id, sym)
             if order_info['status'] == 'closed' and float(order_info['filled']) > 0:
                 fill_price = float(order_info['price'] or order_info['average'])
                 filled = float(order_info['filled'])
-                logger.info(f"[{coin}] 检测到入场单成交: {filled}张 @ {fill_price}")
+                logger.info(f"[{coin}] ✅ 入场单成交: {filled}张 @ ${fill_price:.6f} "
+                            f"ID={cs.entry_order_id}")
                 self.engine.on_order_filled(
                     coin, cs.entry_order_id, fill_price, filled,
                     order_info['side'], order_info.get('reduceOnly', False)
                 )
+                return True
             elif order_info['status'] == 'canceled':
-                # 被取消了，清理状态
+                logger.info(f"[{coin}] 入场挂单被取消 ID={cs.entry_order_id}")
                 cs.entry_order_id = None
                 cs.entry_price = 0.0
                 self.engine.active_coins.discard(coin)
+                return False
         except Exception as e:
-            logger.warning(f"[{coin}] 查成交失败: {e}")
+            logger.warning(f"[{coin}] 查入场成交失败: {e}")
+        return False
 
 
 if __name__ == '__main__':
