@@ -66,7 +66,7 @@ class LiveTrader:
                 vol_list.append((coin, vol))
 
         vol_list.sort(key=lambda x: -x[1])  # 按成交量降序
-        n = min(80, len(vol_list))
+        n = min(150, len(vol_list))
         coins = [c for c, _ in vol_list[:n]]
         coins.sort()  # 最终按字母排序，方便日志
         logger.info(f"成交量≥$200万的币: {len(vol_list)} 个, 实际取{n}个")
