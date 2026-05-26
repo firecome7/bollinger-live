@@ -1,0 +1,266 @@
+2026-05-26 10:45:59,531 [main] INFO Gate.io API连接完成 (3.1s)
+2026-05-26 10:45:59,533 [main] INFO Gate.io可用USDT永续合约: 721 个
+2026-05-26 10:45:59,533 [main] INFO 排除14个大市值后剩: 708 个
+2026-05-26 10:45:59,643 [main] INFO 成交量≥$200万的币: 61 个, 实际取61个
+2026-05-26 10:45:59,643 [main] INFO   最小成交额: $2,004,839 (ARB)
+2026-05-26 10:45:59,643 [main] INFO   最大成交额: $106,386,218 (ZEST)
+2026-05-26 10:45:59,643 [main] INFO   (耗时0.1s)
+2026-05-26 10:46:04,014 [main] INFO 开始初始化K线数据 (61个币, 约11s)...
+2026-05-26 10:46:04,087 [main] WARNING [ARB] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:04,309 [main] WARNING [ASTER] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:04,533 [main] WARNING [AZTEC] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:04,755 [main] WARNING [BCH] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:04,982 [main] WARNING [BEAT] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:05,204 [main] WARNING [BILL] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:05,427 [main] WARNING [BSB] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:05,650 [main] WARNING [BZ] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:05,874 [main] WARNING [CL] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:06,096 [main] WARNING [DRIFT] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:06,319 [main] WARNING [EDEN] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:06,542 [main] WARNING [ENA] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:06,765 [main] WARNING [ERA] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:06,988 [main] WARNING [ESPORTS] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:07,210 [main] WARNING [FARTCOIN] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:07,432 [main] WARNING [FET] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:07,655 [main] WARNING [FIL] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:07,878 [main] WARNING [GRASS] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:08,100 [main] WARNING [GUA] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:08,325 [main] WARNING [H] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:08,325 [main] INFO   初始化进度: 20/61 (0成功/20跳过)
+2026-05-26 10:46:08,548 [main] WARNING [HANA] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:08,771 [main] WARNING [HMSTR] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:08,994 [main] WARNING [HYPE] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:09,216 [main] WARNING [ICP] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:09,439 [main] WARNING [IN] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:09,662 [main] WARNING [INJ] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:09,885 [main] WARNING [LAB] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:10,108 [main] WARNING [LIT] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:10,332 [main] WARNING [LTC] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:10,554 [main] WARNING [MU] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:10,794 [main] WARNING [NEAR] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:11,016 [main] WARNING [NIL] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:11,239 [main] WARNING [NVDAX] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:11,463 [main] WARNING [ONDO] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:11,685 [main] WARNING [ORDI] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:11,909 [main] WARNING [PAXG] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:12,132 [main] WARNING [PENGU] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:12,355 [main] WARNING [PEPE] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:12,578 [main] WARNING [PI] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:13,283 [main] WARNING [PLAY] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:13,283 [main] INFO   初始化进度: 40/61 (0成功/40跳过)
+2026-05-26 10:46:13,506 [main] WARNING [QQQX] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:13,729 [main] WARNING [SAGA] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:13,951 [main] WARNING [SHIB] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:14,174 [main] WARNING [SKYAI] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:14,398 [main] WARNING [SUI] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:14,622 [main] WARNING [SWARMS] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:14,844 [main] WARNING [TAO] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:15,067 [main] WARNING [TIA] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:15,290 [main] WARNING [TRUMP] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:15,512 [main] WARNING [TRUTH] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:15,735 [main] WARNING [UB] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:15,958 [main] WARNING [UNI] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:16,181 [main] WARNING [VIRTUAL] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:16,403 [main] WARNING [VVV] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:16,626 [main] WARNING [WLD] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:16,849 [main] WARNING [XAG] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:17,072 [main] WARNING [XAN] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:17,297 [main] WARNING [XAU] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:17,520 [main] WARNING [XAUT] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:17,744 [main] WARNING [ZEC] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:17,744 [main] INFO   初始化进度: 60/61 (0成功/60跳过)
+2026-05-26 10:46:17,967 [main] WARNING [ZEST] 初始化失败: 'LiveTrader' object has no attribute 'engine'
+2026-05-26 10:46:18,117 [main] INFO K线初始化完成: 0个币成功, 61个跳过 (14s)
+2026-05-26 10:46:18,216 [engine] INFO 交易所持仓同步: 共0个活跃持仓
+2026-05-26 10:46:18,288 [engine] INFO 订单同步: 0个入场挂单, 0个出场限价单
+2026-05-26 10:46:18,288 [engine] INFO 引擎启动 ✅  监控61币  持仓0  挂单0
+2026-05-26 10:46:18,288 [main] INFO ==================================================
+2026-05-26 10:46:18,288 [main] INFO Bollinger策略实盘 启动
+2026-05-26 10:46:18,288 [main] INFO   K线周期: 15m
+2026-05-26 10:46:18,288 [main] INFO   每笔$100 最多20仓 杠杆50x
+2026-05-26 10:46:18,288 [main] INFO   行情轮询: 每15s
+2026-05-26 10:46:18,288 [main] INFO   订单检查: 每5s
+2026-05-26 10:46:18,288 [main] INFO   持仓同步: 每30s
+2026-05-26 10:46:18,288 [main] INFO   触价超时: 15s后转市价
+2026-05-26 10:46:18,288 [main] INFO ==================================================
+2026-05-26 10:46:18,288 [main] INFO ⏰ ── 新K线 10:45 (tick#1) ──
+2026-05-26 10:46:31,922 [main] INFO K线更新: 61个币布林带已刷, 0个失败 (14s)
+2026-05-26 10:46:32,032 [engine] INFO [BCH] 📈 做多信号! 价格$345.1100<下轨$345.4254 阴线(is_green=False) 限价$331.6084 (下轨×0.96)
+2026-05-26 10:46:32,032 [engine] INFO [BCH] 🔍 [验证模式] 检测到long信号 限价$331.608414 不下单
+2026-05-26 10:46:32,032 [engine] INFO [ENA] 📈 做多信号! 价格$0.0973<下轨$0.0974 阴线(is_green=False) 限价$0.0935 (下轨×0.96)
+2026-05-26 10:46:32,032 [engine] INFO [ENA] 🔍 [验证模式] 检测到long信号 限价$0.093491 不下单
+2026-05-26 10:46:32,032 [engine] INFO [SUI] 📈 做多信号! 价格$1.0193<下轨$1.0197 阴线(is_green=False) 限价$0.9789 (下轨×0.96)
+2026-05-26 10:46:32,032 [engine] INFO [SUI] 🔍 [验证模式] 检测到long信号 限价$0.978881 不下单
+2026-05-26 10:46:32,032 [engine] INFO [NIL] 📈 做多信号! 价格$0.0761<下轨$0.0804 阴线(is_green=False) 限价$0.0772 (下轨×0.96)
+2026-05-26 10:46:32,032 [engine] INFO [NIL] 🔍 [验证模式] 检测到long信号 限价$0.077196 不下单
+2026-05-26 10:46:32,032 [engine] INFO [UB] 📉 做空信号! 价格$0.1944>上轨$0.1939 阳线(is_green=True) 限价$0.2017 (上轨×1.04)
+2026-05-26 10:46:32,032 [engine] INFO [UB] 🔍 [验证模式] 检测到short信号 限价$0.201651 不下单
+2026-05-26 10:46:32,032 [engine] INFO [ZEST] 📉 做空信号! 价格$0.1722>上轨$0.1659 阳线(is_green=True) 限价$0.1725 (上轨×1.04)
+2026-05-26 10:46:32,032 [engine] INFO [ZEST] 🔍 [验证模式] 检测到short信号 限价$0.172543 不下单
+2026-05-26 10:46:32,032 [engine] INFO [ERA] 📈 做多信号! 价格$0.1423<下轨$0.1480 阴线(is_green=False) 限价$0.1421 (下轨×0.96)
+2026-05-26 10:46:32,032 [engine] INFO [ERA] 🔍 [验证模式] 检测到long信号 限价$0.142127 不下单
+2026-05-26 10:46:32,032 [engine] INFO [EDEN] 📈 做多信号! 价格$0.0709<下轨$0.0713 阴线(is_green=False) 限价$0.0684 (下轨×0.96)
+2026-05-26 10:46:32,033 [engine] INFO [EDEN] 🔍 [验证模式] 检测到long信号 限价$0.068445 不下单
+2026-05-26 10:46:32,033 [engine] INFO [PENGU] 📈 做多信号! 价格$0.0085<下轨$0.0085 阴线(is_green=False) 限价$0.0082 (下轨×0.96)
+2026-05-26 10:46:32,033 [engine] INFO [PENGU] 🔍 [验证模式] 检测到long信号 限价$0.008201 不下单
+2026-05-26 10:46:32,033 [engine] INFO [LIT] 📈 做多信号! 价格$1.2280<下轨$1.2310 阴线(is_green=False) 限价$1.1818 (下轨×0.96)
+2026-05-26 10:46:32,033 [engine] INFO [LIT] 🔍 [验证模式] 检测到long信号 限价$1.181783 不下单
+2026-05-26 10:46:32,033 [engine] INFO [LTC] 📈 做多信号! 价格$52.1400<下轨$52.1435 阴线(is_green=False) 限价$50.0578 (下轨×0.96)
+2026-05-26 10:46:32,033 [engine] INFO [LTC] 🔍 [验证模式] 检测到long信号 限价$50.057803 不下单
+2026-05-26 10:46:32,179 [main] INFO ── 状态 [10:46:32] ── 权益$0.00(可用$103.99) 持仓0/20 挂单0 倒计时0
+2026-05-26 10:46:47,289 [engine] INFO [PENGU] 📈 做多信号! 价格$0.0085<下轨$0.0085 阴线(is_green=False) 限价$0.0082 (下轨×0.96)
+2026-05-26 10:46:47,289 [engine] INFO [PENGU] 🔍 [验证模式] 检测到long信号 限价$0.008201 不下单
+2026-05-26 10:46:47,289 [engine] INFO [LTC] 📈 做多信号! 价格$52.1400<下轨$52.1435 阴线(is_green=False) 限价$50.0578 (下轨×0.96)
+2026-05-26 10:46:47,289 [engine] INFO [LTC] 🔍 [验证模式] 检测到long信号 限价$50.057803 不下单
+2026-05-26 10:46:47,289 [engine] INFO [NIL] 📈 做多信号! 价格$0.0761<下轨$0.0804 阴线(is_green=False) 限价$0.0772 (下轨×0.96)
+2026-05-26 10:46:47,289 [engine] INFO [NIL] 🔍 [验证模式] 检测到long信号 限价$0.077196 不下单
+2026-05-26 10:46:47,289 [engine] INFO [TRUTH] 📈 做多信号! 价格$0.0120<下轨$0.0121 阴线(is_green=False) 限价$0.0116 (下轨×0.96)
+2026-05-26 10:46:47,289 [engine] INFO [TRUTH] 🔍 [验证模式] 检测到long信号 限价$0.011571 不下单
+2026-05-26 10:46:47,289 [engine] INFO [BCH] 📈 做多信号! 价格$345.1600<下轨$345.4254 阴线(is_green=False) 限价$331.6084 (下轨×0.96)
+2026-05-26 10:46:47,289 [engine] INFO [BCH] 🔍 [验证模式] 检测到long信号 限价$331.608414 不下单
+2026-05-26 10:46:47,290 [engine] INFO [ZEST] 📉 做空信号! 价格$0.1722>上轨$0.1659 阳线(is_green=True) 限价$0.1725 (上轨×1.04)
+2026-05-26 10:46:47,290 [engine] INFO [ZEST] 🔍 [验证模式] 检测到short信号 限价$0.172543 不下单
+2026-05-26 10:46:47,290 [engine] INFO [ENA] 📈 做多信号! 价格$0.0973<下轨$0.0974 阴线(is_green=False) 限价$0.0935 (下轨×0.96)
+2026-05-26 10:46:47,290 [engine] INFO [ENA] 🔍 [验证模式] 检测到long信号 限价$0.093491 不下单
+2026-05-26 10:46:47,290 [engine] INFO [ERA] 📈 做多信号! 价格$0.1426<下轨$0.1480 阴线(is_green=False) 限价$0.1421 (下轨×0.96)
+2026-05-26 10:46:47,290 [engine] INFO [ERA] 🔍 [验证模式] 检测到long信号 限价$0.142127 不下单
+2026-05-26 10:46:47,290 [engine] INFO [EDEN] 📈 做多信号! 价格$0.0708<下轨$0.0713 阴线(is_green=False) 限价$0.0684 (下轨×0.96)
+2026-05-26 10:46:47,290 [engine] INFO [EDEN] 🔍 [验证模式] 检测到long信号 限价$0.068445 不下单
+2026-05-26 10:46:47,290 [engine] INFO [LIT] 📈 做多信号! 价格$1.2270<下轨$1.2310 阴线(is_green=False) 限价$1.1818 (下轨×0.96)
+2026-05-26 10:46:47,290 [engine] INFO [LIT] 🔍 [验证模式] 检测到long信号 限价$1.181783 不下单
+2026-05-26 10:47:02,472 [engine] INFO [NIL] 📈 做多信号! 价格$0.0760<下轨$0.0804 阴线(is_green=False) 限价$0.0772 (下轨×0.96)
+2026-05-26 10:47:02,472 [engine] INFO [NIL] 🔍 [验证模式] 检测到long信号 限价$0.077196 不下单
+2026-05-26 10:47:02,472 [engine] INFO [UB] 📉 做空信号! 价格$0.1942>上轨$0.1939 阳线(is_green=True) 限价$0.2017 (上轨×1.04)
+2026-05-26 10:47:02,472 [engine] INFO [UB] 🔍 [验证模式] 检测到short信号 限价$0.201651 不下单
+2026-05-26 10:47:02,472 [engine] INFO [ERA] 📈 做多信号! 价格$0.1425<下轨$0.1480 阴线(is_green=False) 限价$0.1421 (下轨×0.96)
+2026-05-26 10:47:02,472 [engine] INFO [ERA] 🔍 [验证模式] 检测到long信号 限价$0.142127 不下单
+2026-05-26 10:47:02,472 [engine] INFO [LTC] 📈 做多信号! 价格$52.1400<下轨$52.1435 阴线(is_green=False) 限价$50.0578 (下轨×0.96)
+2026-05-26 10:47:02,472 [engine] INFO [LTC] 🔍 [验证模式] 检测到long信号 限价$50.057803 不下单
+2026-05-26 10:47:02,473 [engine] INFO [TRUTH] 📈 做多信号! 价格$0.0120<下轨$0.0121 阴线(is_green=False) 限价$0.0116 (下轨×0.96)
+2026-05-26 10:47:02,473 [engine] INFO [TRUTH] 🔍 [验证模式] 检测到long信号 限价$0.011571 不下单
+2026-05-26 10:47:02,473 [engine] INFO [EDEN] 📈 做多信号! 价格$0.0708<下轨$0.0713 阴线(is_green=False) 限价$0.0684 (下轨×0.96)
+2026-05-26 10:47:02,473 [engine] INFO [EDEN] 🔍 [验证模式] 检测到long信号 限价$0.068445 不下单
+2026-05-26 10:47:02,473 [engine] INFO [HMSTR] 📈 做多信号! 价格$0.0002<下轨$0.0002 阴线(is_green=False) 限价$0.0001 (下轨×0.96)
+2026-05-26 10:47:02,473 [engine] INFO [HMSTR] 🔍 [验证模式] 检测到long信号 限价$0.000148 不下单
+2026-05-26 10:47:02,473 [engine] INFO [PENGU] 📈 做多信号! 价格$0.0085<下轨$0.0085 阴线(is_green=False) 限价$0.0082 (下轨×0.96)
+2026-05-26 10:47:02,473 [engine] INFO [PENGU] 🔍 [验证模式] 检测到long信号 限价$0.008201 不下单
+2026-05-26 10:47:02,473 [engine] INFO [BCH] 📈 做多信号! 价格$345.0800<下轨$345.4254 阴线(is_green=False) 限价$331.6084 (下轨×0.96)
+2026-05-26 10:47:02,473 [engine] INFO [BCH] 🔍 [验证模式] 检测到long信号 限价$331.608414 不下单
+2026-05-26 10:47:02,473 [engine] INFO [ENA] 📈 做多信号! 价格$0.0973<下轨$0.0974 阴线(is_green=False) 限价$0.0935 (下轨×0.96)
+2026-05-26 10:47:02,473 [engine] INFO [ENA] 🔍 [验证模式] 检测到long信号 限价$0.093491 不下单
+2026-05-26 10:47:02,473 [engine] INFO [SUI] 📈 做多信号! 价格$1.0193<下轨$1.0197 阴线(is_green=False) 限价$0.9789 (下轨×0.96)
+2026-05-26 10:47:02,473 [engine] INFO [SUI] 🔍 [验证模式] 检测到long信号 限价$0.978881 不下单
+2026-05-26 10:47:02,473 [engine] INFO [LIT] 📈 做多信号! 价格$1.2270<下轨$1.2310 阴线(is_green=False) 限价$1.1818 (下轨×0.96)
+2026-05-26 10:47:02,473 [engine] INFO [LIT] 🔍 [验证模式] 检测到long信号 限价$1.181783 不下单
+2026-05-26 10:47:17,775 [engine] INFO [ZEST] 📉 做空信号! 价格$0.1722>上轨$0.1659 阳线(is_green=True) 限价$0.1725 (上轨×1.04)
+2026-05-26 10:47:17,775 [engine] INFO [ZEST] 🔍 [验证模式] 检测到short信号 限价$0.172543 不下单
+2026-05-26 10:47:17,775 [engine] INFO [UB] 📉 做空信号! 价格$0.1945>上轨$0.1939 阳线(is_green=True) 限价$0.2017 (上轨×1.04)
+2026-05-26 10:47:17,775 [engine] INFO [UB] 🔍 [验证模式] 检测到short信号 限价$0.201651 不下单
+2026-05-26 10:47:17,775 [engine] INFO [LIT] 📈 做多信号! 价格$1.2270<下轨$1.2310 阴线(is_green=False) 限价$1.1818 (下轨×0.96)
+2026-05-26 10:47:17,775 [engine] INFO [LIT] 🔍 [验证模式] 检测到long信号 限价$1.181783 不下单
+2026-05-26 10:47:17,775 [engine] INFO [EDEN] 📈 做多信号! 价格$0.0709<下轨$0.0713 阴线(is_green=False) 限价$0.0684 (下轨×0.96)
+2026-05-26 10:47:17,776 [engine] INFO [EDEN] 🔍 [验证模式] 检测到long信号 限价$0.068445 不下单
+2026-05-26 10:47:17,776 [engine] INFO [ERA] 📈 做多信号! 价格$0.1423<下轨$0.1480 阴线(is_green=False) 限价$0.1421 (下轨×0.96)
+2026-05-26 10:47:17,776 [engine] INFO [ERA] 🔍 [验证模式] 检测到long信号 限价$0.142127 不下单
+2026-05-26 10:47:17,776 [engine] INFO [NIL] 📈 做多信号! 价格$0.0758<下轨$0.0804 阴线(is_green=False) 限价$0.0772 (下轨×0.96)
+2026-05-26 10:47:17,776 [engine] INFO [NIL] 🔍 [验证模式] 检测到long信号 限价$0.077196 不下单
+2026-05-26 10:47:17,776 [engine] INFO [TRUTH] 📈 做多信号! 价格$0.0120<下轨$0.0121 阴线(is_green=False) 限价$0.0116 (下轨×0.96)
+2026-05-26 10:47:17,776 [engine] INFO [TRUTH] 🔍 [验证模式] 检测到long信号 限价$0.011571 不下单
+2026-05-26 10:47:32,958 [engine] INFO [TRUTH] 📈 做多信号! 价格$0.0120<下轨$0.0121 阴线(is_green=False) 限价$0.0116 (下轨×0.96)
+2026-05-26 10:47:32,958 [engine] INFO [TRUTH] 🔍 [验证模式] 检测到long信号 限价$0.011571 不下单
+2026-05-26 10:47:32,958 [engine] INFO [ZEST] 📉 做空信号! 价格$0.1722>上轨$0.1659 阳线(is_green=True) 限价$0.1725 (上轨×1.04)
+2026-05-26 10:47:32,958 [engine] INFO [ZEST] 🔍 [验证模式] 检测到short信号 限价$0.172543 不下单
+2026-05-26 10:47:32,959 [engine] INFO [NIL] 📈 做多信号! 价格$0.0757<下轨$0.0804 阴线(is_green=False) 限价$0.0772 (下轨×0.96)
+2026-05-26 10:47:32,959 [engine] INFO [NIL] 🔍 [验证模式] 检测到long信号 限价$0.077196 不下单
+2026-05-26 10:47:32,959 [engine] INFO [EDEN] 📈 做多信号! 价格$0.0709<下轨$0.0713 阴线(is_green=False) 限价$0.0684 (下轨×0.96)
+2026-05-26 10:47:32,959 [engine] INFO [EDEN] 🔍 [验证模式] 检测到long信号 限价$0.068445 不下单
+2026-05-26 10:47:32,959 [engine] INFO [UB] 📉 做空信号! 价格$0.1946>上轨$0.1939 阳线(is_green=True) 限价$0.2017 (上轨×1.04)
+2026-05-26 10:47:32,959 [engine] INFO [UB] 🔍 [验证模式] 检测到short信号 限价$0.201651 不下单
+2026-05-26 10:47:33,200 [main] INFO ── 状态 [10:47:33] ── 权益$0.00(可用$103.99) 持仓0/20 挂单0 倒计时0
+2026-05-26 10:47:48,310 [engine] INFO [ZEST] 📉 做空信号! 价格$0.1722>上轨$0.1659 阳线(is_green=True) 限价$0.1725 (上轨×1.04)
+2026-05-26 10:47:48,310 [engine] INFO [ZEST] 🔍 [验证模式] 检测到short信号 限价$0.172543 不下单
+2026-05-26 10:47:48,310 [engine] INFO [NIL] 📈 做多信号! 价格$0.0759<下轨$0.0804 阴线(is_green=False) 限价$0.0772 (下轨×0.96)
+2026-05-26 10:47:48,310 [engine] INFO [NIL] 🔍 [验证模式] 检测到long信号 限价$0.077196 不下单
+2026-05-26 10:47:48,310 [engine] INFO [ERA] 📈 做多信号! 价格$0.1426<下轨$0.1480 阴线(is_green=False) 限价$0.1421 (下轨×0.96)
+2026-05-26 10:47:48,310 [engine] INFO [ERA] 🔍 [验证模式] 检测到long信号 限价$0.142127 不下单
+2026-05-26 10:47:48,310 [engine] INFO [EDEN] 📈 做多信号! 价格$0.0710<下轨$0.0713 阴线(is_green=False) 限价$0.0684 (下轨×0.96)
+2026-05-26 10:47:48,310 [engine] INFO [EDEN] 🔍 [验证模式] 检测到long信号 限价$0.068445 不下单
+2026-05-26 10:47:48,310 [engine] INFO [UB] 📉 做空信号! 价格$0.1944>上轨$0.1939 阳线(is_green=True) 限价$0.2017 (上轨×1.04)
+2026-05-26 10:47:48,310 [engine] INFO [UB] 🔍 [验证模式] 检测到short信号 限价$0.201651 不下单
+2026-05-26 10:48:20,837 [main] INFO Gate.io API连接完成 (3.1s)
+2026-05-26 10:48:20,839 [main] INFO Gate.io可用USDT永续合约: 721 个
+2026-05-26 10:48:20,839 [main] INFO 排除14个大市值后剩: 708 个
+2026-05-26 10:48:20,954 [main] INFO 成交量≥$200万的币: 61 个, 实际取61个
+2026-05-26 10:48:20,954 [main] INFO   最小成交额: $2,010,903 (ARB)
+2026-05-26 10:48:20,954 [main] INFO   最大成交额: $106,522,899 (ZEST)
+2026-05-26 10:48:20,954 [main] INFO   (耗时0.1s)
+2026-05-26 10:48:25,515 [engine] INFO 交易所持仓同步: 共0个活跃持仓
+2026-05-26 10:48:25,589 [engine] INFO 订单同步: 0个入场挂单, 0个出场限价单
+2026-05-26 10:48:25,590 [engine] INFO 引擎启动 ✅  监控61币  持仓0  挂单0
+2026-05-26 10:48:25,590 [main] INFO 开始初始化K线数据 (61个币, 约11s)...
+2026-05-26 10:48:29,930 [main] INFO   初始化进度: 20/61 (20成功/0跳过)
+2026-05-26 10:48:34,426 [main] INFO   初始化进度: 40/61 (40成功/0跳过)
+2026-05-26 10:48:38,924 [main] INFO   初始化进度: 60/61 (60成功/0跳过)
+2026-05-26 10:48:39,298 [main] INFO K线初始化完成: 61个币成功, 0个跳过 (14s)
+2026-05-26 10:48:39,298 [main] INFO ==================================================
+2026-05-26 10:48:39,298 [main] INFO Bollinger策略实盘 启动
+2026-05-26 10:48:39,298 [main] INFO   K线周期: 15m
+2026-05-26 10:48:39,299 [main] INFO   每笔$100 最多20仓 杠杆50x
+2026-05-26 10:48:39,299 [main] INFO   行情轮询: 每15s
+2026-05-26 10:48:39,299 [main] INFO   订单检查: 每5s
+2026-05-26 10:48:39,299 [main] INFO   持仓同步: 每30s
+2026-05-26 10:48:39,299 [main] INFO   触价超时: 15s后转市价
+2026-05-26 10:48:39,299 [main] INFO ==================================================
+2026-05-26 10:48:39,299 [main] INFO ⏰ ── 新K线 10:45 (tick#1) ──
+2026-05-26 10:48:53,011 [main] INFO K线更新: 61个币布林带已刷, 0个失败 (14s)
+2026-05-26 10:48:53,124 [engine] INFO [ZEST] 📉 做空信号! 价格$0.1730>上轨$0.1659 阳线(is_green=True) 限价$0.1725 (上轨×1.04)
+2026-05-26 10:48:53,125 [engine] INFO [ZEST] 🔍 [验证模式] 检测到short信号 限价$0.172543 不下单
+2026-05-26 10:48:53,125 [engine] INFO [NIL] 📈 做多信号! 价格$0.0756<下轨$0.0804 阴线(is_green=False) 限价$0.0772 (下轨×0.96)
+2026-05-26 10:48:53,125 [engine] INFO [NIL] 🔍 [验证模式] 检测到long信号 限价$0.077196 不下单
+2026-05-26 10:48:53,125 [engine] INFO [UB] 📉 做空信号! 价格$0.1944>上轨$0.1939 阳线(is_green=True) 限价$0.2017 (上轨×1.04)
+2026-05-26 10:48:53,125 [engine] INFO [UB] 🔍 [验证模式] 检测到short信号 限价$0.201651 不下单
+2026-05-26 10:48:53,125 [engine] INFO [LAB] 📉 做空信号! 价格$4.3642>上轨$4.3583 阳线(is_green=True) 限价$4.5326 (上轨×1.04)
+2026-05-26 10:48:53,125 [engine] INFO [LAB] 🔍 [验证模式] 检测到short信号 限价$4.532623 不下单
+2026-05-26 10:48:53,125 [engine] INFO [EDEN] 📈 做多信号! 价格$0.0708<下轨$0.0713 阴线(is_green=False) 限价$0.0684 (下轨×0.96)
+2026-05-26 10:48:53,125 [engine] INFO [EDEN] 🔍 [验证模式] 检测到long信号 限价$0.068445 不下单
+2026-05-26 10:48:53,411 [main] INFO ── 状态 [10:48:53] ── 权益$0.00(可用$104.00) 持仓0/20 挂单0 倒计时0
+2026-05-26 10:49:08,542 [engine] INFO [LAB] 📉 做空信号! 价格$4.3696>上轨$4.3583 阳线(is_green=True) 限价$4.5326 (上轨×1.04)
+2026-05-26 10:49:08,542 [engine] INFO [LAB] 🔍 [验证模式] 检测到short信号 限价$4.532623 不下单
+2026-05-26 10:49:08,542 [engine] INFO [UB] 📉 做空信号! 价格$0.1950>上轨$0.1939 阳线(is_green=True) 限价$0.2017 (上轨×1.04)
+2026-05-26 10:49:08,542 [engine] INFO [UB] 🔍 [验证模式] 检测到short信号 限价$0.201651 不下单
+2026-05-26 10:49:08,542 [engine] INFO [EDEN] 📈 做多信号! 价格$0.0709<下轨$0.0713 阴线(is_green=False) 限价$0.0684 (下轨×0.96)
+2026-05-26 10:49:08,542 [engine] INFO [EDEN] 🔍 [验证模式] 检测到long信号 限价$0.068445 不下单
+2026-05-26 10:49:08,542 [engine] INFO [TRUTH] 📈 做多信号! 价格$0.0120<下轨$0.0121 阴线(is_green=False) 限价$0.0116 (下轨×0.96)
+2026-05-26 10:49:08,542 [engine] INFO [TRUTH] 🔍 [验证模式] 检测到long信号 限价$0.011571 不下单
+2026-05-26 10:49:08,543 [engine] INFO [NIL] 📈 做多信号! 价格$0.0757<下轨$0.0804 阴线(is_green=False) 限价$0.0772 (下轨×0.96)
+2026-05-26 10:49:08,543 [engine] INFO [NIL] 🔍 [验证模式] 检测到long信号 限价$0.077196 不下单
+2026-05-26 10:49:08,543 [engine] INFO [ZEST] 📉 做空信号! 价格$0.1737>上轨$0.1659 阳线(is_green=True) 限价$0.1725 (上轨×1.04)
+2026-05-26 10:49:08,543 [engine] INFO [ZEST] 🔍 [验证模式] 检测到short信号 限价$0.172543 不下单
+2026-05-26 10:49:23,853 [engine] INFO [UB] 📉 做空信号! 价格$0.1953>上轨$0.1939 阳线(is_green=True) 限价$0.2017 (上轨×1.04)
+2026-05-26 10:49:23,854 [engine] INFO [UB] 🔍 [验证模式] 检测到short信号 限价$0.201651 不下单
+2026-05-26 10:49:23,854 [engine] INFO [NIL] 📈 做多信号! 价格$0.0757<下轨$0.0804 阴线(is_green=False) 限价$0.0772 (下轨×0.96)
+2026-05-26 10:49:23,854 [engine] INFO [NIL] 🔍 [验证模式] 检测到long信号 限价$0.077196 不下单
+2026-05-26 10:49:23,854 [engine] INFO [ZEST] 📉 做空信号! 价格$0.1731>上轨$0.1659 阳线(is_green=True) 限价$0.1725 (上轨×1.04)
+2026-05-26 10:49:23,854 [engine] INFO [ZEST] 🔍 [验证模式] 检测到short信号 限价$0.172543 不下单
+2026-05-26 10:49:23,854 [engine] INFO [EDEN] 📈 做多信号! 价格$0.0710<下轨$0.0713 阴线(is_green=False) 限价$0.0684 (下轨×0.96)
+2026-05-26 10:49:23,854 [engine] INFO [EDEN] 🔍 [验证模式] 检测到long信号 限价$0.068445 不下单
+2026-05-26 10:49:23,854 [engine] INFO [TRUTH] 📈 做多信号! 价格$0.0120<下轨$0.0121 阴线(is_green=False) 限价$0.0116 (下轨×0.96)
+2026-05-26 10:49:23,854 [engine] INFO [TRUTH] 🔍 [验证模式] 检测到long信号 限价$0.011571 不下单
+2026-05-26 10:49:23,854 [engine] INFO [LAB] 📉 做空信号! 价格$4.3762>上轨$4.3583 阳线(is_green=True) 限价$4.5326 (上轨×1.04)
+2026-05-26 10:49:23,854 [engine] INFO [LAB] 🔍 [验证模式] 检测到short信号 限价$4.532623 不下单
+2026-05-26 10:49:39,041 [engine] INFO [NIL] 📈 做多信号! 价格$0.0757<下轨$0.0804 阴线(is_green=False) 限价$0.0772 (下轨×0.96)
+2026-05-26 10:49:39,041 [engine] INFO [NIL] 🔍 [验证模式] 检测到long信号 限价$0.077196 不下单
+2026-05-26 10:49:39,041 [engine] INFO [XAN] 📉 做空信号! 价格$0.0117>上轨$0.0117 阳线(is_green=True) 限价$0.0121 (上轨×1.04)
+2026-05-26 10:49:39,041 [engine] INFO [XAN] 🔍 [验证模式] 检测到short信号 限价$0.012117 不下单
+2026-05-26 10:49:39,041 [engine] INFO [TRUTH] 📈 做多信号! 价格$0.0120<下轨$0.0121 阴线(is_green=False) 限价$0.0116 (下轨×0.96)
+2026-05-26 10:49:39,041 [engine] INFO [TRUTH] 🔍 [验证模式] 检测到long信号 限价$0.011571 不下单
+2026-05-26 10:49:39,041 [engine] INFO [UB] 📉 做空信号! 价格$0.1948>上轨$0.1939 阳线(is_green=True) 限价$0.2017 (上轨×1.04)
+2026-05-26 10:49:39,041 [engine] INFO [UB] 🔍 [验证模式] 检测到short信号 限价$0.201651 不下单
+2026-05-26 10:49:39,041 [engine] INFO [ERA] 📈 做多信号! 价格$0.1426<下轨$0.1480 阴线(is_green=False) 限价$0.1421 (下轨×0.96)
+2026-05-26 10:49:39,041 [engine] INFO [ERA] 🔍 [验证模式] 检测到long信号 限价$0.142127 不下单
+2026-05-26 10:49:39,042 [engine] INFO [ZEST] 📉 做空信号! 价格$0.1742>上轨$0.1659 阳线(is_green=True) 限价$0.1725 (上轨×1.04)
+2026-05-26 10:49:39,042 [engine] INFO [ZEST] 🔍 [验证模式] 检测到short信号 限价$0.172543 不下单
+2026-05-26 10:49:39,042 [engine] INFO [LAB] 📉 做空信号! 价格$4.3821>上轨$4.3583 阳线(is_green=True) 限价$4.5326 (上轨×1.04)
+2026-05-26 10:49:39,042 [engine] INFO [LAB] 🔍 [验证模式] 检测到short信号 限价$4.532623 不下单
+2026-05-26 10:49:39,042 [engine] INFO [EDEN] 📈 做多信号! 价格$0.0710<下轨$0.0713 阴线(is_green=False) 限价$0.0684 (下轨×0.96)
+2026-05-26 10:49:39,042 [engine] INFO [EDEN] 🔍 [验证模式] 检测到long信号 限价$0.068445 不下单

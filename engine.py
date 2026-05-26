@@ -57,6 +57,9 @@ class CoinState:
     exit_triggered_at: Optional[float] = None
     exit_triggered_type: str = ''
 
+    # 同K线保护：本根K线内已止损止盈的，不再入场
+    stopped_out_this_bar: bool = False
+
     @property
     def status(self) -> str:
         if self.holding:
@@ -158,6 +161,7 @@ class TradingEngine:
         cs.bar_open = bar_open
         cs.bar_high = 0.0
         cs.bar_low = 999999.0
+        cs.stopped_out_this_bar = False  # 新K线，重置同K线保护
 
         bb = calc_bollinger(candles)
         cs.bb_mid = bb['mid'] or 0.0
@@ -217,6 +221,11 @@ class TradingEngine:
     def _check_entry(self, coin: str, price: float, bar_open: float) -> Optional[dict]:
         """检查入场信号"""
         cs = self.state[coin]
+
+        # 同K线保护：本根K线已止损止盈，不再入场
+        if cs.stopped_out_this_bar:
+            logger.debug(f"[{coin}] 跳过信号: 本根K线已止损/止盈")
+            return None
 
         # 仓位上限
         holding_count = sum(1 for s in self.state.values() if s.holding)
@@ -465,8 +474,11 @@ class TradingEngine:
         cs.exit_triggered_at = None
         cs.exit_triggered_type = ''
         cs.entry_order_id = None
-        self.active_coins.discard(coin)
+        cs.entry_price = 0.0
+        cs.entry_bar_count = 0
         if was_holding:
+            cs.stopped_out_this_bar = True  # 本根K线不再入场
+            self.active_coins.discard(coin)
             logger.info(f"[{coin}] 🗑️ 清空持仓 [{reason}]")
 
     def sync_positions(self, exchange_positions: list[dict]):
