@@ -43,3 +43,7 @@ def load_api_keys() -> dict:
         "请设置环境变量 GATE_API_KEY, GATE_API_SECRET\n"
         "或创建 gate_keys.json: {\"apiKey\":\"...\",\"secret\":\"...\"}"
     )
+
+
+# ====== 验证模式 ======
+DRY_RUN = True  # True=只扫信号不下单，False=实盘

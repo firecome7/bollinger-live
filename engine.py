@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 from config import (
     FIXED_POSITION_VALUE, LEVERAGE, MAX_POSITIONS,
     STOP_LOSS_PCT, TAKE_PROFIT_PCT, ORDER_LIFETIME_BARS,
-    TIMEOUT_SECONDS, TAKER_FEE, MAKER_FEE,
+    TIMEOUT_SECONDS, TAKER_FEE, MAKER_FEE, DRY_RUN,
 )
 from signals import (
     calc_bollinger, check_long_signal, check_short_signal, check_exit_triggered
@@ -262,6 +262,17 @@ class TradingEngine:
                      pos_side: str) -> Optional[dict]:
         """挂入场限价单"""
         cs = self.state[coin]
+
+        if DRY_RUN:
+            logger.info(f"[{coin}] 🔍 [验证模式] 检测到{pos_side}信号 "
+                        f"限价${limit_price:.6f} 不下单")
+            return {
+                'time': time.time(),
+                'coin': coin,
+                'type': 'dry_run_signal',
+                'side': pos_side,
+                'price': limit_price,
+            }
 
         order = self.api.create_limit_entry(coin, side, FIXED_POSITION_VALUE, limit_price)
         if order is None:
